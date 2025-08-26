@@ -35,6 +35,19 @@ export function TodoList() {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
+  const reorderTodos = (draggedId: string, targetId: string) => {
+    const draggedIndex = todos.findIndex(todo => todo.id === draggedId);
+    const targetIndex = todos.findIndex(todo => todo.id === targetId);
+    
+    if (draggedIndex === -1 || targetIndex === -1) return;
+    
+    const newTodos = [...todos];
+    const [draggedTodo] = newTodos.splice(draggedIndex, 1);
+    newTodos.splice(targetIndex, 0, draggedTodo);
+    
+    setTodos(newTodos);
+  };
+
   return (
     <div className="todo-list">
       <h2>Todo List</h2>
@@ -57,6 +70,7 @@ export function TodoList() {
             completed={todo.completed}
             onToggle={toggleTodo}
             onDelete={deleteTodo}
+            onReorder={reorderTodos}
           />
         ))}
       </div>
